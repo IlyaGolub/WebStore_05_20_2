@@ -1,41 +1,19 @@
-﻿@model IEnumerable<WebStore.Models.Employee>
+﻿<partial name="Partial/_Slider"/>
 
-<!DOCTYPE html>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <partial name="Partial/_LeftSideBar"/>
+            </div>
 
-<html>
-<head>
-    <meta name="viewport" content="witdh=device-witdh" />
-    <title>Первое приложение @ViewBag.Title</title>
-</head>
+            <div class="col-sm-9 padding-right">
+                <partial name="Partial/_FeaturesItems"/>
 
-<body>
-    <h3>Сотрудники!</h3>
-
-    <table>
-        <thead>
-            <tr>
-                <th>id</th>
-                <th>Фамилия</th>
-                <th>Имя</th>
-                <th>Отчество</th>
-                <th>Возраст</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var employee in Model)
-            {
-                <tr>
-                    <td title="@employee.Id">@employee.Id</td>
-                    <td title="@employee.Surname">@employee.Surname</td>
-                    <td title="@employee.FirstName">@employee.FirstName</td>
-                    <td title="@employee.Patronymic">@employee.Patronymic</td>
-                    <td title="@employee.Age">@employee.Age</td>
-                    <td> <a href="/Home/EmployeeDetails/@employee.Id" title="Подробная информация">Инфо.</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-</body>
-</html>
+                <partial name="Partial/_CategoryTab"/>
+                
+                <partial name="Partial/_RecomendedItems"/>
+            </div>
+        </div>
+    </div>
+</section>
