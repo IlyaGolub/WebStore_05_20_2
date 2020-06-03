@@ -12,7 +12,7 @@ namespace WebStore.Controllers
             new Employee
             {
                 Id = 1,
-                Surname = "Иванов",
+                Surname = "Пупкин",
                 FirstName = "Иван",
                 Patronymic = "Иванович",
                 Age = 50
@@ -20,7 +20,7 @@ namespace WebStore.Controllers
             new Employee
             {
                 Id = 2,
-                Surname = "Петров",
+                Surname = "Александров",
                 FirstName = "Пётр",
                 Patronymic = "Петрович",
                 Age = 25
@@ -33,9 +33,22 @@ namespace WebStore.Controllers
                 Patronymic = "Сидорович",
                 Age = 30
             },
+            new Employee
+            {
+                Id = 4,
+                Surname = "Петряев",
+                FirstName = "Сидор",
+                Patronymic = "Олегович",
+                Age = 40
+            },
         };
 
-        public IActionResult Index() => View(__Employees);
+        public IActionResult Index()
+        {
+            ViewBag.Title = "Hi people";
+
+            return View(__Employees);
+        }
 
         public IActionResult EmployeeDetails(int id)
         {
@@ -44,6 +57,11 @@ namespace WebStore.Controllers
                 return NotFound();
 
             return View(employee);
+        }
+
+        public IActionResult AnotherAction()
+        {
+            return Content("You are missing");
         }
     }
 }
