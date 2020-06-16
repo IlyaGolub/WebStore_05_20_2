@@ -68,7 +68,7 @@ namespace WebStore.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError(string.Empty, "Неверное имя пользователя, или пароль!");
+            ModelState.AddModelError(string.Empty, "Неверное имя пользователя или пароль!");
 
             return View(Model);
         }
