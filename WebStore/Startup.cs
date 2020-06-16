@@ -35,7 +35,7 @@ namespace WebStore
             services.Configure<IdentityOptions>(opt =>
             {
 #if DEBUG
-                opt.Password.RequiredLength = 3;
+                opt.Password.RequiredLength = 4;
                 opt.Password.RequireDigit = false;
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireUppercase = false;
@@ -47,15 +47,15 @@ namespace WebStore
 #endif
 
                 opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.MaxFailedAccessAttempts = 10;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                opt.Lockout.MaxFailedAccessAttempts = 7;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
             });
 
             services.ConfigureApplicationCookie(opt =>
             {
-                opt.Cookie.Name = "WebStore";
+                opt.Cookie.Name = "WebStoreHW";
                 opt.Cookie.HttpOnly = true;
-                opt.ExpireTimeSpan = TimeSpan.FromDays(10);
+                opt.ExpireTimeSpan = TimeSpan.FromDays(5);
 
                 opt.LoginPath = "/Account/Login";
                 opt.LogoutPath = "/Account/Logout";
