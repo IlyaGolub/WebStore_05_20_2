@@ -88,7 +88,6 @@ namespace WebStore
             app.UseDefaultFiles();
 
             app.UseAuthentication();
-
             app.UseWelcomePage("/MVC");
 
             //app.Use(async (context, next) =>
@@ -100,6 +99,8 @@ namespace WebStore
             //app.UseMiddleware<>()
 
             app.UseRouting();
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

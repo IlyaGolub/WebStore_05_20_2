@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities.Employees;
 using WebStore.Infrastructure.Interfaces;
@@ -19,6 +20,8 @@ namespace WebStore.Controllers
         }
 
         //[Route("List")]
+        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Moderator")]
         public IActionResult Index() => View(_EmployeesData.Get());
 
         //[Route("{id}")]
