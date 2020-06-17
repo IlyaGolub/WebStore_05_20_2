@@ -11,6 +11,7 @@ using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Services;
+using WebStore.Infrastructure.Services.InCookies;
 using WebStore.Infrastructure.Services.InMemory;
 using WebStore.Infrastructure.Services.InSQL;
 
@@ -72,6 +73,7 @@ namespace WebStore
 
             //services.AddSingleton<IProductData, InMemoryProductData>();
             services.AddScoped<IProductData, SqlProductData>();
+            services.AddScoped<ICartService, CookiesCartService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, WebStoreDBInitializer db)
@@ -87,7 +89,6 @@ namespace WebStore
             app.UseStaticFiles();
             app.UseDefaultFiles();
 
-            app.UseAuthentication();
             app.UseWelcomePage("/MVC");
 
             //app.Use(async (context, next) =>
@@ -97,10 +98,13 @@ namespace WebStore
             //    // постобработка
             //});
             //app.UseMiddleware<>()
-
+          
             app.UseRouting();
             app.UseAuthorization();
 
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

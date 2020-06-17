@@ -8,5 +8,6 @@ namespace WebStore.Domain.Entities.Identity
         public const string DefaultAdminPassword = "AdminPAssword"; 
         public const string Moderator = "Moder";
         public const string DefaultModerPassword = "ModerPAssword";
+
     }
 }

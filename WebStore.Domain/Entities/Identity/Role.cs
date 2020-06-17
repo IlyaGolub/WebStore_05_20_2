@@ -6,5 +6,6 @@ namespace WebStore.Domain.Entities.Identity
     {
         public const string Administrator = "Administrators";
         public const string Moderator = "Moderator";
+        public const string User = "Users";
     }
 }
