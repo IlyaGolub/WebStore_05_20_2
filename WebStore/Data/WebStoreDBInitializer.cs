@@ -100,21 +100,39 @@ namespace WebStore.Data
         {
             if (!await _RoleManager.RoleExistsAsync(Role.Administrator))
                 await _RoleManager.CreateAsync(new Role { Name = Role.Administrator });
+            if (!await _RoleManager.RoleExistsAsync(Role.Moderator))
+                await _RoleManager.CreateAsync(new Role { Name = Role.Moderator });
 
             if (!await _RoleManager.RoleExistsAsync(Role.User))
                 await _RoleManager.CreateAsync(new Role { Name = Role.User });
 
             if (await _UserManager.FindByNameAsync(User.Administrator) is null)
             {
-                var admin = new User { UserName = User.Administrator };
+                var admin = new User { UserName = User.Administrator };                
 
-                var create_result = await _UserManager.CreateAsync(admin, User.DefaultAdminPassword);
-                if (create_result.Succeeded)
+                var create_result_admin = await _UserManager.CreateAsync(admin, User.DefaultAdminPassword);
+                
+                if (create_result_admin.Succeeded)
                     await _UserManager.AddToRoleAsync(admin, Role.Administrator);
                 else
                 {
-                    var errors = create_result.Errors.Select(e => e.Description);
+                    var errors = create_result_admin.Errors.Select(e => e.Description);
                     throw new InvalidOperationException($"Ошибка при создании пользователя Администратора: {string.Join(",", errors)}");
+                }
+               
+            }
+            if (await _UserManager.FindByNameAsync(User.Moderator) is null)
+            {
+                var moder = new User { UserName = User.Moderator };
+
+                var create_result_moder = await _UserManager.CreateAsync(moder, User.DefaultModerPassword);
+                
+                if (create_result_moder.Succeeded)
+                    await _UserManager.AddToRoleAsync(moder, Role.Moderator);
+                else
+                {
+                    var errors = create_result_moder.Errors.Select(e => e.Description);
+                    throw new InvalidOperationException($"Ошибка при создании пользователя Модератор: {string.Join(",", errors)}");
                 }
             }
         }
