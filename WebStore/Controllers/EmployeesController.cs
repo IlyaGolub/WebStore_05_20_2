@@ -1,6 +1,8 @@
 ﻿using System;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.Entities.Employees;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Infrastructure.Mapping;
@@ -15,10 +17,7 @@ namespace WebStore.Controllers
     {
         private readonly IEmployeesData _EmployeesData;
 
-        public EmployeesController(IEmployeesData EmployeesData)
-        {
-            _EmployeesData = EmployeesData;
-        }
+        public EmployeesController(IEmployeesData EmployeesData) => _EmployeesData = EmployeesData;
 
         //[Route("List")]
         [Authorize(Roles = "Administrator")]
@@ -39,7 +38,7 @@ namespace WebStore.Controllers
         #region Редактирование
 
         [Authorize(Roles = Role.Administrator)]
-        public IActionResult Edit(int? Id)
+        public IActionResult Edit(int? Id, [FromServices] IMapper Mapper)
         {
             if (Id is null) return View(new EmployeeViewModel());
 
@@ -50,12 +49,13 @@ namespace WebStore.Controllers
             if (employee is null)
                 return NotFound();
 
-            return View(employee.ToView());
+            return View(Mapper.Map<EmployeeViewModel>(employee));
+            //return View(employee.ToView());
         }
 
         [HttpPost]
         [Authorize(Roles = Role.Administrator)]
-        public IActionResult Edit(EmployeeViewModel Model)
+        public IActionResult Edit(EmployeeViewModel Model, [FromServices] IMapper Mapper)
         {
             if (Model is null)
                 throw new ArgumentNullException(nameof(Model));
@@ -69,7 +69,8 @@ namespace WebStore.Controllers
             if (!ModelState.IsValid)
                 return View(Model);
 
-            var employee = Model.FromView();
+            var employee = Mapper.Map<Employee>(Model);
+            //var employee = Model.FromView();
 
             if (Model.Id == 0)
                 _EmployeesData.Add(employee);
