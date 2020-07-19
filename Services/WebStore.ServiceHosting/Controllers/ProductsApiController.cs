@@ -18,11 +18,17 @@ namespace WebStore.ServiceHosting.Controllers
         [HttpGet("sections")] //api/products/sections
         public IEnumerable<Section> GetSections() => _ProductData.GetSections();
 
+        [HttpGet("section/{Id}")]
+        public Section GetSection(int Id) => _ProductData.GetSection(Id);
+
         [HttpGet("brands")] //api/products/brands
         public IEnumerable<Brand> GetBrands() => _ProductData.GetBrands();
 
+        [HttpGet("brand/{Id}")]
+        public Brand GetBrand(int Id) => _ProductData.GetBrand(Id);
+
         [HttpPost]
-        public IEnumerable<ProductDTO> GetProducts([FromBody] ProductFilter Filter = null) => _ProductData.GetProducts(Filter);
+        public PageProductsDTO GetProducts([FromBody] ProductFilter Filter = null) => _ProductData.GetProducts(Filter);
 
         [HttpGet("{id}")]
         public ProductDTO GetProductById(int id) => _ProductData.GetProductById(id);

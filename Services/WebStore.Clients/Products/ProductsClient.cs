@@ -15,12 +15,16 @@ namespace WebStore.Clients.Products
 
         public IEnumerable<Section> GetSections() => Get<IEnumerable<Section>>($"{_ServiceAddress}/sections");
 
+        public Section GetSection(int Id) => Get<Section>($"{_ServiceAddress}/section/{Id}");
+
         public IEnumerable<Brand> GetBrands() => Get<IEnumerable<Brand>>($"{_ServiceAddress}/brands");
 
-        public IEnumerable<ProductDTO> GetProducts(ProductFilter Filter = null) =>
+        public Brand GetBrand(int Id) => Get<Brand>($"{_ServiceAddress}/brand/{Id}");
+
+        public PageProductsDTO GetProducts(ProductFilter Filter = null) =>
             Post(_ServiceAddress, Filter ?? new ProductFilter())
                .Content
-               .ReadAsAsync<IEnumerable<ProductDTO>>()
+               .ReadAsAsync<PageProductsDTO>()
                .Result;
 
         public ProductDTO GetProductById(int id) => Get<ProductDTO>($"{_ServiceAddress}/{id}");

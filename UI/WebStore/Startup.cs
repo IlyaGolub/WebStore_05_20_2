@@ -13,11 +13,13 @@ using WebStore.Clients.Orders;
 using WebStore.Clients.Products;
 using WebStore.Clients.Values;
 using WebStore.Domain.Entities.Identity;
+using WebStore.Hubs;
 using WebStore.Infrastructure.AutoMapperPropfiles;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces.Services;
 using WebStore.Interfaces.TestApi;
 using WebStore.Logger;
+using WebStore.Services.Products;
 using WebStore.Services.Products.InCookies;
 
 namespace WebStore
@@ -30,6 +32,8 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<ViewModelsMapping>();
@@ -87,10 +91,13 @@ namespace WebStore
 
             services.AddControllersWithViews()
                .AddRazorRuntimeCompilation();
+            services.AddRazorPages();
 
             services.AddScoped<IEmployeesData, EmployeesClient>();
             services.AddScoped<IProductData, ProductsClient>();
-            services.AddScoped<ICartService, CookiesCartService>();
+            services.AddScoped<ICartStore, CookiesCartStore>();
+            services.AddScoped<ICartService, CartService>();
+            //services.AddScoped<ICartService, CookiesCartService>();
             services.AddScoped<IOrderService, OrdersClient>();
             services.AddTransient<IValueService, ValuesClient>();
         }
@@ -102,15 +109,16 @@ namespace WebStore
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseWebAssemblyDebugging();
                 app.UseBrowserLink();
             }
+
+            app.UseBlazorFrameworkFiles();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseStaticFiles();
             app.UseDefaultFiles();
-
-            app.UseWelcomePage("/MVC");
 
             app.UseRouting();
 
@@ -119,6 +127,11 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<InformationHub>("/info");
+
+                endpoints.MapRazorPages();
+                endpoints.MapFallbackToFile("blazor.html");
+
                 endpoints.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
